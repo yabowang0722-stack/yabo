@@ -2,9 +2,13 @@ import { GoogleGenAI, Type } from "@google/genai";
 import { PackagingStyle, ToyAnalysis } from "../types";
 
 const getAI = () => {
-  const apiKey = process.env.GEMINI_API_KEY || (import.meta as any).env?.VITE_GEMINI_API_KEY;
+  // Check multiple possible sources for the API key
+  const apiKey = 
+    process.env.GEMINI_API_KEY || 
+    (import.meta as any).env?.VITE_GEMINI_API_KEY || 
+    (import.meta as any).env?.GEMINI_API_KEY;
   
-  if (!apiKey || apiKey === "undefined" || apiKey === "") {
+  if (!apiKey || apiKey === "undefined" || apiKey === "" || apiKey === "YOUR_API_KEY_HERE") {
     throw new Error("API_KEY_MISSING");
   }
   return new GoogleGenAI({ apiKey });

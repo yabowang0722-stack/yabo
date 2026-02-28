@@ -37,7 +37,7 @@ export default function App() {
     } catch (err: any) {
       console.error("Analysis error:", err);
       if (err?.message === "API_KEY_MISSING") {
-        setError("Gemini API Key is missing. Please add GEMINI_API_KEY to your environment variables.");
+        setError("CONFIG_ERROR");
       } else if (err?.message?.includes("429") || err?.message?.includes("RESOURCE_EXHAUSTED") || err?.message?.includes("quota")) {
         setError("The analysis engine is currently busy. We're retrying automatically, but if it persists, please wait a minute and try again.");
       } else {
@@ -108,7 +108,39 @@ export default function App() {
               />
             </motion.div>
 
-            {error && (
+            {error === "CONFIG_ERROR" ? (
+              <motion.div
+                initial={{ opacity: 0, scale: 0.9 }}
+                animate={{ opacity: 1, scale: 1 }}
+                className="p-6 bg-amber-50 border border-amber-200 rounded-2xl space-y-4"
+              >
+                <div className="flex items-start gap-3 text-amber-700">
+                  <AlertCircle className="shrink-0 mt-0.5" size={20} />
+                  <div>
+                    <p className="font-bold text-sm">Action Required: API Key Missing</p>
+                    <p className="text-xs mt-1 leading-relaxed">
+                      To use the AI features on Vercel, you must add your Gemini API key to the project settings.
+                    </p>
+                  </div>
+                </div>
+                
+                <div className="bg-white/50 rounded-xl p-3 space-y-2 text-[11px] text-amber-800 border border-amber-100">
+                  <p>1. Go to <b>Vercel Dashboard</b> &gt; <b>Settings</b> &gt; <b>Environment Variables</b></p>
+                  <p>2. Add Key: <code className="bg-amber-100 px-1 rounded">VITE_GEMINI_API_KEY</code></p>
+                  <p>3. Add Value: <i className="opacity-60">(Your Gemini API Key)</i></p>
+                  <p>4. <b>Redeploy</b> your project for changes to take effect.</p>
+                </div>
+
+                <a 
+                  href="https://aistudio.google.com/app/apikey" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="block w-full py-2 bg-amber-600 text-white rounded-xl text-center text-xs font-bold hover:bg-amber-700 transition-colors"
+                >
+                  Get Free API Key
+                </a>
+              </motion.div>
+            ) : error && (
               <motion.div
                 initial={{ opacity: 0, scale: 0.9 }}
                 animate={{ opacity: 1, scale: 1 }}
@@ -118,14 +150,12 @@ export default function App() {
                   <AlertCircle className="shrink-0 mt-0.5" size={18} />
                   <p className="text-sm font-medium">{error}</p>
                 </div>
-                {!error.includes("API Key") && (
-                  <button 
-                    onClick={() => analysis ? handleGenerate() : handleAnalyze()}
-                    className="w-full py-2 bg-white border border-red-200 text-red-600 rounded-xl text-xs font-bold hover:bg-red-50 transition-colors"
-                  >
-                    Try Again
-                  </button>
-                )}
+                <button 
+                  onClick={() => analysis ? handleGenerate() : handleAnalyze()}
+                  className="w-full py-2 bg-white border border-red-200 text-red-600 rounded-xl text-xs font-bold hover:bg-red-50 transition-colors"
+                >
+                  Try Again
+                </button>
               </motion.div>
             )}
           </div>
