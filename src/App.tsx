@@ -16,6 +16,7 @@ export default function App() {
   const [isAnalyzing, setIsAnalyzing] = useState(false);
   const [isGenerating, setIsGenerating] = useState(false);
   const [generatedImage, setGeneratedImage] = useState<string | null>(null);
+  const [refinementPrompt, setRefinementPrompt] = useState("");
   const [error, setError] = useState<string | null>(null);
 
   // Auto-analyze when image is uploaded
@@ -47,13 +48,13 @@ export default function App() {
     }
   };
 
-  const handleGenerate = async () => {
+  const handleGenerate = async (refinement?: string) => {
     if (!analysis) return;
     
     setIsGenerating(true);
     setError(null);
     try {
-      const result = await generatePackaging(analysis, selectedStyle, selectedImage || undefined);
+      const result = await generatePackaging(analysis, selectedStyle, selectedImage || undefined, refinement || refinementPrompt);
       setGeneratedImage(result.imageUrl);
     } catch (err: any) {
       console.error("Generation error:", err);
@@ -71,6 +72,7 @@ export default function App() {
     setSelectedImage(null);
     setAnalysis(null);
     setGeneratedImage(null);
+    setRefinementPrompt("");
     setError(null);
   };
 
@@ -118,7 +120,7 @@ export default function App() {
                 </div>
                 {!error.includes("API Key") && (
                   <button 
-                    onClick={analysis ? handleGenerate : handleAnalyze}
+                    onClick={() => analysis ? handleGenerate() : handleAnalyze()}
                     className="w-full py-2 bg-white border border-red-200 text-red-600 rounded-xl text-xs font-bold hover:bg-red-50 transition-colors"
                   >
                     Try Again
@@ -165,8 +167,11 @@ export default function App() {
               <DesignDisplay 
                 imageUrl={generatedImage} 
                 isLoading={isGenerating} 
-                onGenerate={handleGenerate}
+                onGenerate={() => handleGenerate()}
                 canGenerate={!!analysis}
+                refinementPrompt={refinementPrompt}
+                onRefinementChange={setRefinementPrompt}
+                onRefine={() => handleGenerate(refinementPrompt)}
               />
             </motion.div>
           </div>

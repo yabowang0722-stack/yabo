@@ -1,5 +1,5 @@
 import React from 'react';
-import { Download, Share2, Wand2, Loader2 } from 'lucide-react';
+import { Download, Share2, Wand2, Loader2, MessageSquarePlus } from 'lucide-react';
 import { motion, AnimatePresence } from 'motion/react';
 
 interface DesignDisplayProps {
@@ -7,9 +7,20 @@ interface DesignDisplayProps {
   isLoading: boolean;
   onGenerate: () => void;
   canGenerate: boolean;
+  refinementPrompt: string;
+  onRefinementChange: (value: string) => void;
+  onRefine: () => void;
 }
 
-export const DesignDisplay: React.FC<DesignDisplayProps> = ({ imageUrl, isLoading, onGenerate, canGenerate }) => {
+export const DesignDisplay: React.FC<DesignDisplayProps> = ({ 
+  imageUrl, 
+  isLoading, 
+  onGenerate, 
+  canGenerate,
+  refinementPrompt,
+  onRefinementChange,
+  onRefine
+}) => {
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
@@ -111,6 +122,39 @@ export const DesignDisplay: React.FC<DesignDisplayProps> = ({ imageUrl, isLoadin
           </>
         )}
       </button>
+
+      {imageUrl && !isLoading && (
+        <motion.div
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="p-6 bg-white rounded-2xl border border-zinc-200 shadow-sm space-y-4"
+        >
+          <div className="flex items-center gap-2 text-zinc-400">
+            <MessageSquarePlus size={16} />
+            <span className="text-[10px] font-bold uppercase tracking-widest">Refine Design</span>
+          </div>
+          <p className="text-xs text-zinc-500">
+            Want to change something? Describe your modifications below (e.g., "Make the background blue", "Add more stars", "Change font to bold").
+          </p>
+          <div className="flex gap-2">
+            <input
+              type="text"
+              value={refinementPrompt}
+              onChange={(e) => onRefinementChange(e.target.value)}
+              placeholder="Describe changes..."
+              className="flex-1 px-4 py-2 bg-zinc-50 border border-zinc-200 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-zinc-900/10 transition-all"
+              onKeyDown={(e) => e.key === 'Enter' && onRefine()}
+            />
+            <button
+              onClick={onRefine}
+              disabled={!refinementPrompt.trim() || isLoading}
+              className="px-4 py-2 bg-zinc-900 text-white rounded-xl text-sm font-bold hover:bg-zinc-800 disabled:opacity-50 transition-all"
+            >
+              Apply
+            </button>
+          </div>
+        </motion.div>
+      )}
     </div>
   );
 };

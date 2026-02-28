@@ -73,7 +73,8 @@ export async function analyzeToy(base64Image: string): Promise<ToyAnalysis> {
 export async function generatePackaging(
   toy: ToyAnalysis,
   style: PackagingStyle,
-  originalImageBase64?: string
+  originalImageBase64?: string,
+  refinementPrompt?: string
 ): Promise<{ imageUrl: string; prompt: string }> {
   const stylePrompts: Record<PackagingStyle, string> = {
     [PackagingStyle.FUTURISTIC]: "Sleek futuristic toy packaging, holographic accents, dark matte finish, glowing LED-like lines, minimalist high-tech typography, metallic textures.",
@@ -101,6 +102,7 @@ export async function generatePackaging(
   
   DESIGN STYLE:
   ${stylePrompts[style]}
+  ${refinementPrompt ? `\n  USER REFINEMENT REQUEST: ${refinementPrompt}` : ""}
   
   TITLE DESIGN:
   - Create a LARGE, BOLD, AND STYLIZED TITLE for the toy: "${toy.name}".
