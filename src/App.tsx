@@ -132,6 +132,7 @@ export default function App() {
                   "Detailed toy descriptions are added to panels",
                   "Try 'Toys R Us' for a classic retail look",
                   "Use 'Pop Mart' for trendy designer art toys",
+                  "Try 'ZURU Vibrant' for high-energy unboxing vibes",
                 ].map((tip, i) => (
                   <li key={i} className="flex items-start gap-2 text-xs leading-relaxed">
                     <div className="w-1 h-1 rounded-full bg-zinc-500 mt-1.5 shrink-0" />

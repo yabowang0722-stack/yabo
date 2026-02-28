@@ -84,6 +84,7 @@ export async function generatePackaging(
     [PackagingStyle.HASBRO_CINEMATIC]: "Hasbro-style cinematic packaging, dark dramatic backgrounds, character-centric illustrations, metallic foil accents, heavy bold typography, gritty and action-oriented atmosphere.",
     [PackagingStyle.TOYSRUS_PLAYFUL]: "Toys 'R' Us inspired retail packaging, friendly and accessible design, iconic blue and yellow color palette, playful star motifs, clear product visibility, cheerful and rounded typography, family-friendly atmosphere.",
     [PackagingStyle.POPMART_COLLECTIBLE]: "Pop Mart inspired blind-box packaging, high-end artistic character illustration, sophisticated matte finish, pastel or vibrant designer color palettes, clean modern layout, collectible art-toy aesthetic, premium and trendy feel.",
+    [PackagingStyle.ZURU_VIBRANT]: "ZURU inspired high-energy packaging, vibrant neon colors, dynamic action graphics, 'unboxing surprise' aesthetic, bold high-contrast typography, glossy finish with starburst and explosion motifs, playful and exciting retail feel.",
   };
 
   const prompt = `You are a professional toy packaging designer. 

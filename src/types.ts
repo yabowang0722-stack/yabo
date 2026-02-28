@@ -10,6 +10,7 @@ export enum PackagingStyle {
   HASBRO_CINEMATIC = "Hasbro Cinematic",
   TOYSRUS_PLAYFUL = "Toys R Us Playful",
   POPMART_COLLECTIBLE = "Pop Mart Collectible",
+  ZURU_VIBRANT = "ZURU Vibrant",
 }
 
 export interface ToyAnalysis {

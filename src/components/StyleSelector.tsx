@@ -24,6 +24,7 @@ const STYLES = [
   { id: PackagingStyle.HASBRO_CINEMATIC, label: "Hasbro Cinematic", description: "Dramatic & gritty", color: "bg-blue-900" },
   { id: PackagingStyle.TOYSRUS_PLAYFUL, label: "Toys R Us", description: "Friendly & colorful", color: "bg-blue-500" },
   { id: PackagingStyle.POPMART_COLLECTIBLE, label: "Pop Mart", description: "Designer art toy", color: "bg-pink-400" },
+  { id: PackagingStyle.ZURU_VIBRANT, label: "ZURU Vibrant", description: "High-energy & unboxing", color: "bg-yellow-400" },
 ];
 
 export const StyleSelector: React.FC<StyleSelectorProps> = ({ selectedStyle, onStyleSelect }) => {
