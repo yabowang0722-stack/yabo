@@ -1,7 +1,10 @@
 import { GoogleGenAI, Type } from "@google/genai";
 import { PackagingStyle, ToyAnalysis } from "../types";
 
-const ai = new GoogleGenAI({ apiKey: process.env.GEMINI_API_KEY || "" });
+const getAI = () => {
+  const apiKey = process.env.GEMINI_API_KEY || "";
+  return new GoogleGenAI({ apiKey });
+};
 
 async function withRetry<T>(fn: () => Promise<T>, maxRetries = 3): Promise<T> {
   let lastError: any;
@@ -27,6 +30,7 @@ async function withRetry<T>(fn: () => Promise<T>, maxRetries = 3): Promise<T> {
 
 export async function analyzeToy(base64Image: string): Promise<ToyAnalysis> {
   return withRetry(async () => {
+    const ai = getAI();
     const response = await ai.models.generateContent({
       model: "gemini-3-flash-preview",
       contents: [
@@ -128,6 +132,7 @@ export async function generatePackaging(
   }
 
   return withRetry(async () => {
+    const ai = getAI();
     const response = await ai.models.generateContent({
       model: "gemini-2.5-flash-image",
       contents,
