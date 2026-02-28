@@ -35,10 +35,12 @@ export default function App() {
       setAnalysis(result);
     } catch (err: any) {
       console.error("Analysis error:", err);
-      if (err?.message?.includes("429") || err?.message?.includes("RESOURCE_EXHAUSTED") || err?.message?.includes("quota")) {
+      if (err?.message === "API_KEY_MISSING") {
+        setError("Gemini API Key is missing. Please add GEMINI_API_KEY to your environment variables.");
+      } else if (err?.message?.includes("429") || err?.message?.includes("RESOURCE_EXHAUSTED") || err?.message?.includes("quota")) {
         setError("The analysis engine is currently busy. We're retrying automatically, but if it persists, please wait a minute and try again.");
       } else {
-        setError("Failed to analyze the toy. Please try a different image.");
+        setError("Failed to recognize the toy. Please try a clearer photo or a different angle.");
       }
     } finally {
       setIsAnalyzing(false);
@@ -108,10 +110,20 @@ export default function App() {
               <motion.div
                 initial={{ opacity: 0, scale: 0.9 }}
                 animate={{ opacity: 1, scale: 1 }}
-                className="p-4 bg-red-50 border border-red-100 rounded-2xl flex items-start gap-3 text-red-600"
+                className="p-4 bg-red-50 border border-red-100 rounded-2xl space-y-3"
               >
-                <AlertCircle className="shrink-0 mt-0.5" size={18} />
-                <p className="text-sm font-medium">{error}</p>
+                <div className="flex items-start gap-3 text-red-600">
+                  <AlertCircle className="shrink-0 mt-0.5" size={18} />
+                  <p className="text-sm font-medium">{error}</p>
+                </div>
+                {!error.includes("API Key") && (
+                  <button 
+                    onClick={analysis ? handleGenerate : handleAnalyze}
+                    className="w-full py-2 bg-white border border-red-200 text-red-600 rounded-xl text-xs font-bold hover:bg-red-50 transition-colors"
+                  >
+                    Try Again
+                  </button>
+                )}
               </motion.div>
             )}
           </div>

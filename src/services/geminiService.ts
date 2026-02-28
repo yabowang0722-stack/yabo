@@ -2,7 +2,10 @@ import { GoogleGenAI, Type } from "@google/genai";
 import { PackagingStyle, ToyAnalysis } from "../types";
 
 const getAI = () => {
-  const apiKey = process.env.GEMINI_API_KEY || "";
+  const apiKey = process.env.GEMINI_API_KEY;
+  if (!apiKey || apiKey === "undefined") {
+    throw new Error("API_KEY_MISSING");
+  }
   return new GoogleGenAI({ apiKey });
 };
 
@@ -43,7 +46,7 @@ export async function analyzeToy(base64Image: string): Promise<ToyAnalysis> {
               },
             },
             {
-              text: "Analyze this toy and provide details in JSON format. Include: 'name' (a catchy name for the toy), 'description' (physical description), 'category' (e.g., Action Figure, Plush, Educational), and 'targetAudience' (e.g., Toddlers, Ages 6-12, Collectors).",
+              text: "Analyze this image and identify the toy. Provide details in JSON format. If no toy is clearly visible, try to identify the main object. Include: 'name' (a catchy name), 'description' (physical description), 'category' (e.g., Action Figure, Plush, Educational), and 'targetAudience' (e.g., Toddlers, Ages 6-12, Collectors).",
             },
           ],
         },
