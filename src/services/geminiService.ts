@@ -2,8 +2,9 @@ import { GoogleGenAI, Type } from "@google/genai";
 import { PackagingStyle, ToyAnalysis } from "../types";
 
 const getAI = () => {
-  const apiKey = process.env.GEMINI_API_KEY;
-  if (!apiKey || apiKey === "undefined") {
+  const apiKey = process.env.GEMINI_API_KEY || (import.meta as any).env?.VITE_GEMINI_API_KEY;
+  
+  if (!apiKey || apiKey === "undefined" || apiKey === "") {
     throw new Error("API_KEY_MISSING");
   }
   return new GoogleGenAI({ apiKey });
